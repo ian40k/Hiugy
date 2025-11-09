@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Test</title>
+</head>
+<body>
+    <input type="file" id="uploadInput" accept="image/*">
+    <button onclick="uploadFile()">Upload Test</button>
+    <div id="status"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAg4j8pAx4cWfNf-SSCGjjNkWFCfglkL4g",
+            authDomain: "my-web-85f5a.firebaseapp.com",
+            projectId: "my-web-85f5a",
+            storageBucket: "my-web-85f5a.firebasestorage.app",
+            messagingSenderId: "18359829309",
+            appId: "1:18359829309:web:95a9896b8df32f1adcbb54"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const storage = firebase.storage();
+
+        function uploadFile() {
+            const fileInput = document.getElementById('uploadInput');
+            fileInput.click();
+        }
+
+        document.getElementById('uploadInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) {
+                document.getElementById('status').innerHTML = "No file selected";
+                return;
+            }
+
+            document.getElementById('status').innerHTML = "Uploading...";
+
+            const storageRef = storage.ref('test/' + file.name);
+            
+            storageRef.put(file).then((snapshot) => {
+                document.getElementById('status').innerHTML = "✅ Upload successful!";
+            }).catch((error) => {
+                document.getElementById('status').innerHTML = "❌ Error: " + error.message;
+                console.error("Upload error:", error);
+            });
+        });
+    </script>
+</body>
+  </html>
